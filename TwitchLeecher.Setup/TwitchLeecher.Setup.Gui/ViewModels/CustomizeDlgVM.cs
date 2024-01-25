@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿using Microsoft.Deployment.WindowsInstaller;
+using System;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using TwitchLeecher.Setup.Gui.Services;
 
 namespace TwitchLeecher.Setup.Gui.ViewModels
@@ -28,7 +32,18 @@ namespace TwitchLeecher.Setup.Gui.ViewModels
                 FirePropertyChanged("InstallDir");
             }
         }
-
+        public string ErrorInfo
+        {
+            get
+            {
+                    string errorstring = "";
+                    foreach (string error in GetErrors("InstallDir"))
+                    {
+                        errorstring += error;
+                    }
+                    return errorstring;
+            }
+        }
         public string FeatureTLSize
         {
             get
@@ -58,6 +73,13 @@ namespace TwitchLeecher.Setup.Gui.ViewModels
                 {
                     try
                     {
+                        bool  isokchinese= IsValidPath(installDir);
+                        if (!isokchinese)
+                        {
+                            AddError(currentProperty, "The path must only contain a-zA-Z():\\ .");
+                            return;
+                        }
+
                         Path.GetFullPath(installDir);
 
                         if (Path.IsPathRooted(installDir))
@@ -90,6 +112,15 @@ namespace TwitchLeecher.Setup.Gui.ViewModels
                     AddError(currentProperty, "The specified folder is not empty!");
                 }
             }
+        }
+
+        static bool IsValidPath(string path)
+        {
+            // 使用正则表达式进行匹配
+            string pattern = @"^[a-zA-Z():\\ ]+$";
+            Regex regex = new Regex(pattern);
+
+            return regex.IsMatch(path);
         }
 
         #endregion Methods
