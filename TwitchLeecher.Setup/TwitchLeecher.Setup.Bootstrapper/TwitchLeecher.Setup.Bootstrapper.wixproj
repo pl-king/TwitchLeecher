@@ -36,6 +36,7 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppIcon.ico" />
     <Content Include="Variables.wxi" />
   </ItemGroup>
   <ItemGroup>

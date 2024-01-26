@@ -10,7 +10,8 @@
 		<CustomAction Id="SetProperties" BinaryKey="CustomActions" DllEntry="SetProperties" Return="check" Execute="immediate" />
 
 		<!-- UNINSTALL EXECUTE ACTIONS -->
-		<CustomAction Id="DeleteUserDataDeferredData" Property="DeleteUserDataDeferred" Value="TL_PRODUCT_NAME=$(var.TL_PRODUCT_NAME)" />
+		<!--<CustomAction Id="DeleteUserDataDeferredData" Property="DeleteUserDataDeferred" Value="TL_PRODUCT_NAME=$(var.TL_PRODUCT_NAME)" />-->
+		<CustomAction Id="DeleteUserDataDeferredData" Property="DeleteUserDataDeferred" Value="TL_PRODUCT_NAME=def" />
 		<CustomAction Id="DeleteUserDataDeferred" BinaryKey="CustomActions" DllEntry="DeleteUserDataDeferred" Return="check" Execute="deferred" />
 	</Fragment>
 </Wix>

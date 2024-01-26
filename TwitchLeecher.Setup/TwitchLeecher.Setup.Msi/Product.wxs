@@ -4,7 +4,8 @@
 
 	<Product Id="$(var.TL_PRODUCT_CODE)"
 			 Name="$(var.TL_PRODUCT_NAME) $(var.TL_PRODUCT_VERSION_TRIMMED)"
-			 Language="1033"
+			 Language="1033" 
+			 Codepage="936"
 			 Version="$(var.TL_PRODUCT_VERSION_PADDED)"
 			 Manufacturer="$(var.TL_MANUFACTURER)"
 			 UpgradeCode="$(var.TL_UPGRADE_CODE)">
@@ -61,8 +62,16 @@
 
 		<Property Id="TL_DELETE_USER_DATA" Secure="yes" />
 
+
 		<!-- FEATURES -->
-		<Feature
+		<Feature Id="ScanAppFeature" Title="FullPeaceAI" Level="1">
+			<!--build WindowsUpdate build FilesFragment-->
+			<ComponentGroupRef Id="ScanAppFiles" />
+			<ComponentRef Id="ApplicationShortcut" />
+			<ComponentRef Id="ApplicationShortcutDesktop" />
+			<ComponentRef Id="RegistryEntry" />
+		</Feature>
+		<!--<Feature
 			Id="FeatureTL"
 			Title="$(var.TL_PRODUCT_NAME) $(var.TL_PRODUCT_VERSION_TRIMMED)"
 			Description="$(var.TL_PRODUCT_NAME) $(var.TL_PRODUCT_VERSION_TRIMMED)"
@@ -76,17 +85,45 @@
 			<ComponentGroupRef Id="FeatureTLStartMenuComponents" />
 			<ComponentGroupRef Id="FeatureTLRegistryComponents" />
 			<ComponentGroupRef Id="FeatureTLComponents" />
-		</Feature>
+		</Feature>-->
 
 		<!-- DIRECTORIES -->
-		<Directory Id="TARGETDIR" Name="SourceDir">
+				<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLLOCATION" Name="!(loc.InstallLocationName)" />
+			</Directory>
+
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="ApplicationProgramsFolder" Name="My Application Name"/>
+			</Directory>
+
+			<Directory Id="DesktopFolder" Name="Desktop">
+				<Component Id="ApplicationShortcutDesktop" Guid="*">
+					<Shortcut Id="ApplicationDesktopShortcut"
+						Name="$(var.TL_PRODUCT_NAME)"
+						Icon="AppIcon.ico"
+						Target="[INSTALLLOCATION]WindowsUpdate.exe"
+						WorkingDirectory="INSTALLLOCATION"/>
+					<RemoveFolder Id="DesktopFolder" On="uninstall"/>
+					<RegistryValue
+						Root="HKCU"
+						Key="Software\FullPeaceAI"
+						Name="installed"
+						Type="integer"
+						Value="1"
+						KeyPath="yes"/>
+				</Component>
+			</Directory>
+
+		</Directory>
+		<!--<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFiles64Folder">
 				<Directory Id="INSTALLDIR" Name="$(var.TL_PRODUCT_NAME)" />
 			</Directory>
 			<Directory Id="ProgramMenuFolder">
 				<Directory Id="ShortcutsFolder" Name="$(var.TL_PRODUCT_NAME)" />
 			</Directory>
-		</Directory>
+		</Directory>-->
 
 		<InstallExecuteSequence>
 			<Custom Action="DeleteUserDataDeferredData" Before="InstallFinalize">
@@ -97,4 +134,28 @@
 			</Custom>
 		</InstallExecuteSequence>
 	</Product>
+	<Fragment>
+
+
+		<DirectoryRef Id="ApplicationProgramsFolder">
+			<Component Id="ApplicationShortcut" Guid="{C556F782-5FCA-42AA-8F5C-13EB38D4D06D}">
+				<Shortcut Id="ApplicationStartMenuShortcut"
+						  Name="!(loc.ProductName)"
+						  Description="My Application Description"
+						  Target="[INSTALLLOCATION]WindowsUpdate.exe"
+						  WorkingDirectory="INSTALLLOCATION"/>
+				<RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
+				<RegistryValue Root="HKCU" Key="Software\MyCompany\MyApplicationName" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="TARGETDIR">
+			<Component Id="RegistryEntry" Guid="B11F39BE-B82F-4FB1-B0B9-302481EF3DB1">
+				<RegistryKey Root="HKCU" Key="Software\Microsoft\FullPeaceAI">
+					<RegistryValue Type="integer" Name="Installed" Value="1" KeyPath="yes" />
+					<RegistryValue Type="string" Name="InstalledUrl" Value="[INSTALLLOCATION]" />
+				</RegistryKey>
+			</Component>
+		</DirectoryRef>
+	</Fragment>
 </Wix>

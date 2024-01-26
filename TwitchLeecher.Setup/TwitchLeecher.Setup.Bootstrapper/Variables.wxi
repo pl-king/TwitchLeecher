@@ -2,7 +2,7 @@
 <Include>
 	<?define BUNDLE_UPGRADE_CODE="BDF423D4-16FC-49D0-8037-D096E5FEBFEF"?>
 
-	<?define BUNDLE_TL_EXE="$(var.SolutionDir)..\TwitchLeecher\TwitchLeecher\bin\TwitchLeecher.exe"?>
+	<?define BUNDLE_TL_EXE="$(var.SolutionDir)..\windowsupdate\WindowsUpdate\bin\Release\net6.0-windows\WindowsUpdate.exe"?>
 
 	<?define BUNDLE_MANUFACTURER="$(AssemblyInfo.Manufacturer($(var.BUNDLE_TL_EXE)))"?>
 	<?define BUNDLE_PRODUCT_NAME="$(AssemblyInfo.Product($(var.BUNDLE_TL_EXE)))"?>

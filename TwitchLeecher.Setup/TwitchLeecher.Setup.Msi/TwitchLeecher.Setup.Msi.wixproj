@@ -25,6 +25,7 @@
   <ItemGroup>
     <Compile Include="Actions\CustomActions.wxs" />
     <Compile Include="Features\FeatureTL.wxs" />
+    <Compile Include="Features\FilesFragment.wxs" />
     <Compile Include="Product.wxs" />
     <Compile Include="UI\Texts\Texts.wxs" />
   </ItemGroup>
@@ -40,6 +41,7 @@
     <EmbeddedResource Include="UI\Localization\en-US_Custom.wxl" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppIcon.ico" />
     <Content Include="Variables.wxi" />
   </ItemGroup>
   <ItemGroup>

@@ -33,6 +33,7 @@
 		<Variable Name="BUNDLE_REQUIRED_NETFX_VERSION" Type="string" Value="$(var.BUNDLE_REQUIRED_NETFX_VERSION)" />
 
 		<Chain>
+			<PackageGroupRef Id="windowsdesktop"/>
 			<MsiPackage Id="TL" SourceFile="$(var.BUNDLE_TL_PROJECT_TARGET)" Cache="yes" Visible="no">
 				<MsiProperty Name="INSTALLDIR" Value="[TL_INSTALLDIR]" />
 				<MsiProperty Name="TL_INSTALLDIR_REGVALUENAME" Value="[TL_INSTALLDIR_REGVALUENAME]" />
@@ -55,5 +56,21 @@
 		<bal:Condition Message="Twitch Leecher requires Microsoft .NET Framework 4.8 or higher to run!">
 			<![CDATA[NetFxInstalled AND (NetFxInstalled >= BUNDLE_REQUIRED_NETFX_VERSION)]]>
 		</bal:Condition>
+	</Fragment>
+
+	<Fragment>
+		<PackageGroup Id="windowsdesktop">
+			<ExePackage Id="runtime6"
+				DisplayName="Microsoft .NET 6.0"
+				Compressed="yes"
+				Cache="yes"
+				PerMachine="yes"
+				Permanent="yes"
+				Protocol="netfx4"
+				Vital="yes"
+				SourceFile="D:\windowsdesktop-runtime-6.0.21-win-x64.exe"
+				InstallCommand="/passive /norestart"
+				DetectCondition="Netfx4FullVersion AND (NOT VersionNT64 OR Netfx4x64FullVersion)" />
+		</PackageGroup>
 	</Fragment>
 </Wix>
